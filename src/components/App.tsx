@@ -2,10 +2,11 @@ import "@mantine/core/styles.css";
 import { AppShell, MantineProvider } from "@mantine/core";
 import { theme } from "../theme";
 
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import AuthProvider from "../contexts/authContext";
 import Signup from "./Signup";
+import Signin from "./Signin";
 
 export default function App() {
   return (
@@ -26,9 +27,10 @@ export default function App() {
           </AppShell.Navbar> */}
 
             <AppShell.Main>
-              <AppShell.Section>
+              <Routes>
                 <Route path="/signup" Component={Signup} />
-              </AppShell.Section>
+                <Route path="/signin" Component={Signin} />
+              </Routes>
             </AppShell.Main>
           </AuthProvider>
         </BrowserRouter>

@@ -4,12 +4,14 @@ import {
   User,
   UserCredential,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { LoadingOverlay } from "@mantine/core";
 
 const AuthContext = React.createContext<{
   currentUser?: User | null;
   signup?: (email: string, password: string) => Promise<UserCredential>;
+  signin?: (email: string, password: string) => Promise<UserCredential>;
 }>({});
 
 export function useAuth() {
@@ -36,9 +38,14 @@ export default function AuthProvider({
     return createUserWithEmailAndPassword(auth, email, password);
   }
 
+  function signin(email: string, password: string) {
+    return signInWithEmailAndPassword(auth, email, password);
+  }
+
   const value = {
     currentUser,
     signup,
+    signin,
   };
 
   return (

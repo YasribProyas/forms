@@ -7,37 +7,35 @@ import {
 } from "@mantine/core";
 import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/authContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [error, setError] = useState<string | null>(null);
-  const [confirmError, setConfirmError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-  const confirmPasswordRef = useRef<HTMLInputElement | null>(null);
 
-  const { signup, currentUser } = useAuth();
+  const { signin, currentUser } = useAuth();
 
   async function handleSubmit() {
     setLoading(true);
-    if (passwordRef.current!.value !== confirmPasswordRef.current!.value) {
+    if (passwordRef.current == null) {
       setLoading(false);
-      return setError("Passwords do not match");
+      return setError("Passwords cant be empty");
     }
 
     try {
-      await signup!(emailRef.current!.value, passwordRef.current!.value);
+      await signin!(emailRef.current!.value, passwordRef.current!.value);
     } catch (error: any) {
-      setError("Failed to create an account");
+      setError("Failed to sign in");
     }
     setLoading(false);
   }
 
   return (
     <Fieldset variant="filled">
-      <h1>Sign up</h1>
+      <h1>Sign in</h1>
       <Alert color="green">Logged in as {currentUser!.email}</Alert>
       <TextInput
         type="email"
@@ -52,24 +50,17 @@ export default function Signup() {
         withAsterisk
         ref={passwordRef}
       />
-      <PasswordInput
-        label="Confirm password"
-        placeholder="Re-type password"
-        withAsterisk
-        ref={confirmPasswordRef}
-        error={confirmError ? "Passwords do not match" : null}
-      />
-      <br />
       {error && (
         <>
           <Alert color="red" title={error} /> <br />
         </>
       )}
+      <br />
       <Button onClick={handleSubmit} disabled={loading}>
         Submit
       </Button>
       <h5>
-        Already registered? <Link to="/signin">Sign in</Link>
+        Not registered? <Link to="/signup">Sign up</Link>
       </h5>
     </Fieldset>
   );
