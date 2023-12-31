@@ -2,12 +2,13 @@ import {
   Alert,
   Button,
   Fieldset,
+  Group,
   PasswordInput,
   TextInput,
 } from "@mantine/core";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useAuth } from "../contexts/authContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Signup() {
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +17,7 @@ export default function Signup() {
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
-  const { signin, currentUser } = useAuth();
+  const { signin, currentUser, logout } = useAuth();
 
   async function handleSubmit() {
     setLoading(true);
@@ -33,35 +34,59 @@ export default function Signup() {
     setLoading(false);
   }
 
+  function handleSignout() {
+    try {
+      logout?.();
+    } catch (error) {
+      console.log("Logout error:", error);
+    }
+  }
+
   return (
     <Fieldset variant="filled">
       <h1>Sign in</h1>
-      <Alert color="green">Logged in as {currentUser!.email}</Alert>
-      <TextInput
-        type="email"
-        label="Email"
-        placeholder="example@email.com"
-        withAsterisk
-        ref={emailRef}
-      />
-      <PasswordInput
-        label="Password"
-        placeholder="password"
-        withAsterisk
-        ref={passwordRef}
-      />
-      {error && (
+      {currentUser ? (
+        <Alert color="yellow">
+          You are already logged in as {currentUser!.email}
+          <p>You must log out first to signin</p>
+          <Group>
+            <Button component={Link} to="/">
+              Cancel
+            </Button>
+            <Button variant="outline" color="orange" onClick={handleSignout}>
+              Log out
+            </Button>
+          </Group>
+        </Alert>
+      ) : (
         <>
-          <Alert color="red" title={error} /> <br />
+          <TextInput
+            type="email"
+            label="Email"
+            placeholder="example@email.com"
+            withAsterisk
+            ref={emailRef}
+          />
+          <PasswordInput
+            label="Password"
+            placeholder="password"
+            withAsterisk
+            ref={passwordRef}
+          />
+          {error && (
+            <>
+              <Alert color="red" title={error} /> <br />
+            </>
+          )}
+          <br />
+          <Button onClick={handleSubmit} disabled={loading}>
+            Submit
+          </Button>
+          <h5>
+            Not registered? <Link to="/signup">Sign up</Link>
+          </h5>
         </>
       )}
-      <br />
-      <Button onClick={handleSubmit} disabled={loading}>
-        Submit
-      </Button>
-      <h5>
-        Not registered? <Link to="/signup">Sign up</Link>
-      </h5>
     </Fieldset>
   );
 }

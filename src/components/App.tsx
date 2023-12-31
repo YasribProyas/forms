@@ -1,12 +1,13 @@
 import "@mantine/core/styles.css";
-import { AppShell, MantineProvider } from "@mantine/core";
+import { AppShell, Flex, MantineProvider } from "@mantine/core";
 import { theme } from "../theme";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import AuthProvider from "../contexts/authContext";
 import Signup from "./Signup";
 import Signin from "./Signin";
+import ProfileCicleOrLinks from "./UserAuthenticationButtons";
 
 export default function App() {
   return (
@@ -19,7 +20,15 @@ export default function App() {
         <BrowserRouter>
           <AuthProvider>
             <AppShell.Header pl="xl">
-              <h1>Form</h1>
+              <Flex justify="space-between">
+                <Link
+                  to="/"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  <h1>Form</h1>
+                </Link>
+                <ProfileCicleOrLinks />
+              </Flex>
             </AppShell.Header>
 
             {/* <AppShell.Navbar>

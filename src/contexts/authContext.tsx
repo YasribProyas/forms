@@ -12,6 +12,7 @@ const AuthContext = React.createContext<{
   currentUser?: User | null;
   signup?: (email: string, password: string) => Promise<UserCredential>;
   signin?: (email: string, password: string) => Promise<UserCredential>;
+  logout?: () => Promise<void>;
 }>({});
 
 export function useAuth() {
@@ -42,10 +43,15 @@ export default function AuthProvider({
     return signInWithEmailAndPassword(auth, email, password);
   }
 
+  function logout() {
+    return auth.signOut();
+  }
+
   const value = {
     currentUser,
     signup,
     signin,
+    logout,
   };
 
   return (
