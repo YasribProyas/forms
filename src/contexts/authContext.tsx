@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  updateEmail,
 } from "firebase/auth";
 import { LoadingOverlay } from "@mantine/core";
 
@@ -13,6 +14,7 @@ const AuthContext = React.createContext<{
   currentUser?: User | null;
   signup?: (email: string, password: string) => Promise<UserCredential>;
   signin?: (email: string, password: string) => Promise<UserCredential>;
+  changeEmail?: (newEmail: string) => Promise<void>;
   resetPassword?: (email: string) => Promise<void>;
   logout?: () => Promise<void>;
 }>({});
@@ -49,6 +51,10 @@ export default function AuthProvider({
     return auth.signOut();
   }
 
+  function changeEmail(newEmail: string) {
+    return updateEmail(auth.currentUser!, newEmail);
+  }
+
   function resetPassword(email: string) {
     return sendPasswordResetEmail(auth, email);
   }
@@ -62,6 +68,7 @@ export default function AuthProvider({
     signup,
     signin,
     logout,
+    changeEmail,
     resetPassword,
   };
 

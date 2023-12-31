@@ -18,7 +18,7 @@ export default function ResetPassword() {
 
   const [emailSent, setEmailSent] = useState<boolean>(false);
 
-  const { resetPassword } = useAuth();
+  const { currentUser, resetPassword } = useAuth();
 
   async function handleResetPassword() {
     setEmailError(null);
@@ -51,6 +51,7 @@ export default function ResetPassword() {
           <TextInput
             label="Email"
             type="email"
+            value={currentUser?.email || ""}
             ref={resetEmailRef}
             error={emailError}
           />
