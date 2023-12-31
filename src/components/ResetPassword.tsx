@@ -52,6 +52,7 @@ export default function ResetPassword() {
             label="Email"
             type="email"
             value={currentUser?.email || ""}
+            placeholder="Your email"
             ref={resetEmailRef}
             error={emailError}
           />

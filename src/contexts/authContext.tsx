@@ -54,6 +54,9 @@ export default function AuthProvider({
   function changeEmail(newEmail: string) {
     return updateEmail(auth.currentUser!, newEmail);
   }
+  // function changeName(newEmail: string) {
+  //   return updateEmail(auth.currentUser!, newEmail);
+  // }
 
   function resetPassword(email: string) {
     return sendPasswordResetEmail(auth, email);

@@ -6,16 +6,21 @@ import {
   Group,
   LoadingOverlay,
   TextInput,
+  Text,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/authContext";
 import { Link } from "react-router-dom";
 import { useInputState } from "@mantine/hooks";
+import UserAuthenticationButtons from "./UserAuthenticationButtons";
 
 export default function UpdateProfile() {
-  const { currentUser } = useAuth();
+  const { currentUser, changeEmail } = useAuth();
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [updateSuccessful, setUpdateSuccessful] = useState<boolean | null>(
+    null
+  );
 
   const [editedName, setEditedName] = useInputState("");
   const [editedEmail, setEditedEmail] = useInputState("");
@@ -32,12 +37,21 @@ export default function UpdateProfile() {
   async function handleProfileUpdate() {
     setLoading(true);
     const promises = [];
-    if (editedName) {
-      // promises.push(currentUser?.updateProfile({ displayName: editedName }));
+    if (editedEmail) {
+      promises.push(changeEmail!(editedEmail));
     }
+
+    try {
+      await Promise.all(promises);
+      setUpdateSuccessful(true);
+    } catch (err) {
+      setUpdateSuccessful(true);
+      console.error(err);
+    }
+    setLoading(false);
   }
 
-  return (
+  return currentUser ? (
     <AppShell.Section>
       <LoadingOverlay visible={loading} />
       <h1>Update Profile</h1>
@@ -65,6 +79,11 @@ export default function UpdateProfile() {
       <Alert color="yellow" mb="lg">
         Leave blank to keep it same
       </Alert>
+      {updateSuccessful == false && (
+        <Alert color="red" mb="lg">
+          Failed to update profile. Please try again.
+        </Alert>
+      )}
       <Group>
         <Button disabled={!updatable} onClick={handleProfileUpdate}>
           Update Profile
@@ -74,5 +93,14 @@ export default function UpdateProfile() {
         </Button>
       </Group>
     </AppShell.Section>
+  ) : (
+    <Alert color="yellow">
+      <Text>
+        You are currently not logged in. You must login before updating your
+        profile
+      </Text>
+      <br />
+      <UserAuthenticationButtons />
+    </Alert>
   );
 }
