@@ -33,7 +33,7 @@ export default function ProfileCicleOrLinks() {
           <Center>
             <Avatar size="xl" radius="xl" component="button" ta={Center} />
           </Center>
-          <Text ta="center">{currentUser.email}</Text>
+          <Text ta="center">{currentUser?.displayName}</Text>
 
           <Menu.Divider />
 

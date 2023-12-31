@@ -8,6 +8,8 @@ import AuthProvider from "../contexts/authContext";
 import Signup from "./Signup";
 import Signin from "./Signin";
 import ProfileCicleOrLinks from "./UserAuthenticationButtons";
+import ResetPassword from "./ResetPassword";
+import UpdateProfile from "./UpdateProfile";
 
 export default function App() {
   return (
@@ -39,6 +41,8 @@ export default function App() {
               <Routes>
                 <Route path="/signup" Component={Signup} />
                 <Route path="/signin" Component={Signin} />
+                <Route path="/reset-password" Component={ResetPassword} />
+                <Route path="/update-profile" Component={UpdateProfile} />
               </Routes>
             </AppShell.Main>
           </AuthProvider>

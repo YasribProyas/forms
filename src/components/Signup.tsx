@@ -8,9 +8,11 @@ import {
 } from "@mantine/core";
 import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/authContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Signup() {
+  const redirect = useNavigate();
+
   const [error, setError] = useState<string | null>(null);
   const [confirmError, setConfirmError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -25,11 +27,13 @@ export default function Signup() {
     setLoading(true);
     if (passwordRef.current!.value !== confirmPasswordRef.current!.value) {
       setLoading(false);
-      return setError("Passwords do not match");
+      setConfirmError(true);
+      return;
     }
 
     try {
       await signup!(emailRef.current!.value, passwordRef.current!.value);
+      redirect("/");
     } catch (error: any) {
       setError("Failed to create an account");
     }
