@@ -9,7 +9,7 @@ import {
   Text,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/authContext";
+import { useAuth } from "../../contexts/authContext";
 import { Link } from "react-router-dom";
 import { useInputState } from "@mantine/hooks";
 import UserAuthenticationButtons from "./UserAuthenticationButtons";

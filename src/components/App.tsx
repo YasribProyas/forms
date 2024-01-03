@@ -5,11 +5,11 @@ import { theme } from "../theme";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import AuthProvider from "../contexts/authContext";
-import Signup from "./Signup";
-import Signin from "./Signin";
-import ProfileCicleOrLinks from "./UserAuthenticationButtons";
-import ResetPassword from "./ResetPassword";
-import UpdateProfile from "./UpdateProfile";
+import Signup from "./AuthComps/Signup";
+import Signin from "./AuthComps/Signin";
+import ProfileCicleOrLinks from "./AuthComps/UserAuthenticationButtons";
+import ResetPassword from "./AuthComps/ResetPassword";
+import UpdateProfile from "./AuthComps/UpdateProfile";
 
 export default function App() {
   return (

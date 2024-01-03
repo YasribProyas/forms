@@ -6,8 +6,8 @@ import {
   PasswordInput,
   TextInput,
 } from "@mantine/core";
-import React, { useRef, useState } from "react";
-import { useAuth } from "../contexts/authContext";
+import { useRef, useState } from "react";
+import { useAuth } from "../../contexts/authContext";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Signup() {

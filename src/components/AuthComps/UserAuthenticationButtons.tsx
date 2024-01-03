@@ -1,8 +1,13 @@
-import { useAuth } from "../contexts/authContext";
+import { useAuth } from "../../contexts/authContext";
 import { Avatar, Button, Center, Group, Menu, Text } from "@mantine/core";
 import { Link } from "react-router-dom";
+import Signin from "./Signin";
 
-export default function ProfileCicleOrLinks() {
+export default function ProfileCicleOrLinks({
+  modalType,
+}: {
+  modalType?: Boolean;
+}) {
   let { currentUser, logout } = useAuth();
 
   function handleSignout() {
@@ -14,14 +19,21 @@ export default function ProfileCicleOrLinks() {
   }
 
   return !currentUser ? (
-    <Group mr="xl">
-      <Button color="blue" component={Link} to="/signin">
-        Login
-      </Button>
-      <Button variant="outline" color="blue" component={Link} to="/signup">
-        Register
-      </Button>
-    </Group>
+    modalType ? (
+      <Group mr="xl">
+        <Signin modalType={true} />
+        {/* TODO: Signup modal type */}
+      </Group>
+    ) : (
+      <Group mr="xl">
+        <Button color="blue" component={Link} to="/signin">
+          Login
+        </Button>
+        <Button variant="outline" color="blue" component={Link} to="/signup">
+          Register
+        </Button>
+      </Group>
+    )
   ) : (
     <Group mr="xl">
       <Menu shadow="md" width={250}>

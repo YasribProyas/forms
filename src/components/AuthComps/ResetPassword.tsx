@@ -6,7 +6,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useRef, useState } from "react";
-import { useAuth } from "../contexts/authContext";
+import { useAuth } from "../../contexts/authContext";
 import { AuthError } from "firebase/auth";
 
 export default function ResetPassword() {
