@@ -3,14 +3,16 @@ import {
   Button,
   Fieldset,
   Group,
+  Modal,
   PasswordInput,
   TextInput,
 } from "@mantine/core";
 import { useRef, useState } from "react";
 import { useAuth } from "../../contexts/authContext";
 import { Link, useNavigate } from "react-router-dom";
+import { useDisclosure } from "@mantine/hooks";
 
-export default function Signup() {
+export default function Signup({ modalType }: { modalType?: boolean }) {
   const redirect = useNavigate();
 
   const [error, setError] = useState<string | null>(null);
@@ -48,58 +50,77 @@ export default function Signup() {
     }
   }
 
-  return (
-    <Fieldset variant="filled">
-      <h1>Sign up</h1>
-      {currentUser ? (
-        <Alert color="yellow">
-          You are already logged in as {currentUser!.email}
-          <p>You must log out first to signin</p>
-          <Group>
-            <Button component={Link} to="/">
-              Cancel
+  function SingnupFieldset() {
+    return (
+      <Fieldset variant="filled">
+        <h1>Sign up</h1>
+        {currentUser ? (
+          <Alert color="yellow">
+            You are already logged in as {currentUser!.email}
+            <p>You must log out first to signin</p>
+            <Group>
+              <Button component={Link} to="/">
+                Cancel
+              </Button>
+              <Button variant="outline" color="orange" onClick={handleSignout}>
+                Log out
+              </Button>
+            </Group>
+          </Alert>
+        ) : (
+          <>
+            <TextInput
+              type="email"
+              label="Email"
+              placeholder="example@email.com"
+              withAsterisk
+              ref={emailRef}
+            />
+            <PasswordInput
+              label="Password"
+              placeholder="password"
+              withAsterisk
+              ref={passwordRef}
+            />
+            <PasswordInput
+              label="Confirm password"
+              placeholder="Re-type password"
+              withAsterisk
+              ref={confirmPasswordRef}
+              error={confirmError ? "Passwords do not match" : null}
+            />
+            <br />
+            {error && (
+              <>
+                <Alert color="red" title={error} /> <br />
+              </>
+            )}
+            <Button onClick={handleSubmit} disabled={loading}>
+              Submit
             </Button>
-            <Button variant="outline" color="orange" onClick={handleSignout}>
-              Log out
-            </Button>
-          </Group>
-        </Alert>
-      ) : (
-        <>
-          <TextInput
-            type="email"
-            label="Email"
-            placeholder="example@email.com"
-            withAsterisk
-            ref={emailRef}
-          />
-          <PasswordInput
-            label="Password"
-            placeholder="password"
-            withAsterisk
-            ref={passwordRef}
-          />
-          <PasswordInput
-            label="Confirm password"
-            placeholder="Re-type password"
-            withAsterisk
-            ref={confirmPasswordRef}
-            error={confirmError ? "Passwords do not match" : null}
-          />
-          <br />
-          {error && (
-            <>
-              <Alert color="red" title={error} /> <br />
-            </>
-          )}
-          <Button onClick={handleSubmit} disabled={loading}>
-            Submit
-          </Button>
-          <h5>
-            Already registered? <Link to="/signin">Sign in</Link>
-          </h5>
-        </>
-      )}
-    </Fieldset>
-  );
+            <h5>
+              Already registered? <Link to="/signin">Sign in</Link>
+            </h5>
+          </>
+        )}
+      </Fieldset>
+    );
+  }
+
+  function SingnupModal() {
+    const [opened, { open, close }] = useDisclosure(false);
+
+    return (
+      <Group>
+        <Button color="blue" variant="outline" onClick={open}>
+          Signup
+        </Button>
+        <Modal opened={opened} onClose={close}>
+          <SingnupFieldset />
+        </Modal>
+      </Group>
+    );
+  }
+
+  return modalType ? <SingnupModal /> : <SingnupFieldset />;
 }

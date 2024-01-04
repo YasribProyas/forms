@@ -22,14 +22,14 @@ export default function App() {
         <BrowserRouter>
           <AuthProvider>
             <AppShell.Header pl="xl">
-              <Flex justify="space-between">
+              <Flex justify="space-between" align="center">
                 <Link
                   to="/"
                   style={{ color: "inherit", textDecoration: "none" }}
                 >
                   <h1>Form</h1>
                 </Link>
-                <ProfileCicleOrLinks />
+                <ProfileCicleOrLinks modalType />
               </Flex>
             </AppShell.Header>
 
